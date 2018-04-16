@@ -5,9 +5,7 @@ class Blogger extends CI_Controller {
 
 	public function __construct()
 	{
-		//Membuat kelas parent agar bisa digunakan di semua fungsi
 		parent::__construct();
-		//Load model dan helper
 		$this->load->model('Artikel');
 		$this->load->helper('url_helper','file');
 		date_default_timezone_set('Asia/Jakarta');
@@ -15,8 +13,7 @@ class Blogger extends CI_Controller {
 
 	public function index()
 	{
-		//Memanggil fungsi menampilkan semua tabel artikel
-		$data['artikel'] = $this->Artikel->get_article();//ambil data dari Model
+		$data['artikel'] = $this->Artikel->get_article();
 		$this->load->view('blogger/header');
 		$this->load->view('blogger/tampil_blog', $data);
 		$this->load->view('blogger/footer');
@@ -24,28 +21,22 @@ class Blogger extends CI_Controller {
 
 
 	public function view(){
-		$id = $this->uri->segment(3); //mengambil variabel dari url
-		$data['show_article'] = $this->Artikel->get_article_by_id($id);//menyimpan hasil dari filtering data
-		// Jika data tidak ditemukan akan di arahkan ke page 404
+		$id = $this->uri->segment(3);
+		$data['show_article'] = $this->Artikel->get_article_by_id($id);
 		if(empty($data['show_article'])){
 			show_404();
 		}
-		//Meload View
 		$this->load->view('blogger/header');
 		$this->load->view('blogger/view', $data);
 		$this->load->view('blogger/footer');
 	}
 
 	public function create(){
-		//Meload helper form dan form valudasi
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		//validasi inputan yang masuk
 		$this->form_validation->set_rules('title', 'Title', 'required');
   
-		//Jika validasi belum berjalan
 		if ($this->form_validation->run() == FALSE) {
-			//Meload View tambah artikel
 			$this->load->view('blogger/header');
 			$this->load->view('blogger/create');
 			$this->load->view('blogger/footer');
@@ -61,7 +52,6 @@ class Blogger extends CI_Controller {
 			}
 			else{
 				$data = array('upload_data' => $this->upload->data());
-				// Data input ke model
 				$data['input'] = array(
 					'title' => $this->input->post('title'),
 					'artikel' => $this->input->post('artikel'),
@@ -69,14 +59,39 @@ class Blogger extends CI_Controller {
 					'gambar' => $this->upload->data('file_name'),
 					'tanggal' => date("Y/m/d")
 				);
-				//query tambah data
 				$this->Artikel->set_article(0,$data['input']);
-				//kembali ke home
 				redirect('blogger');
 			}
 		}
 	}
-}
 
-/* End of file database_controller.php */
-/* Location: ./application/controllers/database_controller.php */
+	public function edit(){
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('title', 'title', 'required');
+		$this->form_validation->set_rules('artikel', 'artikel', 'required');
+		$this->form_validation->set_rules('author', 'Author', 'required');
+
+		$id = $this->uri->segment(3);
+		$data['show_article'] = $this->Artikel->get_article_by_id($id);
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('blogger/header');
+			$this->load->view('blogger/edit',$data);
+			$this->load->view('blogger/footer');
+		} else {
+				$data['input'] = array(
+					'title' => $this->input->post('title'),
+					'author' => $this->input->post('author'),
+					'artikel' => $this->input->post('artikel')
+				);
+				$this->Artikel->set_article($id,$data['input']);
+				redirect('blogger');
+			}
+		}	
+
+	public function delete(){
+		$id = $this->uri->segment(3);
+		$this->Artikel->delete_article($id);
+		redirect('blogger','refresh');
+	}
+}

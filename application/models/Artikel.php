@@ -20,7 +20,17 @@ class Artikel extends CI_Model {
      }
 
      public function set_article($id = 0, $data){
-          return $this->db->insert('personal_blog', $data);     
+          if($id == 0){
+               return $this->db->insert('personal_blog', $data);          
+          }else{
+               $this->db->where('id',$id);
+               return $this->db->update('personal_blog', $data);
+          }
+          
+     }
+     public function delete_article($id){
+          $this->db->where('id', $id);
+          return $this->db->delete('personal_blog');
      }
 }
 

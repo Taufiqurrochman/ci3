@@ -15,6 +15,8 @@
   		</div>
 	</div>
     <p><a href="<?php echo site_url('blogger/view/'.$row['id'])?>" class="btn btn-default">Baca Selengkapnya</a> 
+       <a href="<?php echo site_url('blogger/edit/'.$row['id'])?>" class="btn btn-primary">Edit</a> 
+       <a href="<?php echo site_url('blogger/delete/'.$row['id'])?>" class="btn btn-warning">Delete</a> 
     </p>
       <br>
        <?php
