@@ -34,7 +34,16 @@ class Blogger extends CI_Controller {
 	public function create(){
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('title', 'Title', 'required');
+		$this->form_validation->set_rules('title', 'Title', 'required',
+			array(
+				'required' => "Isi judul dulu coi"
+			)
+		);
+		$this->form_validation->set_rules('author', 'Author', 'required',
+			array(
+				'required' => "Isi Author dulu coi"
+			)
+		);
   
 		if ($this->form_validation->run() == FALSE) {
 			$this->load->view('blogger/header');

@@ -1,4 +1,5 @@
 <?php 
+	echo validation_errors();
 	echo form_open_multipart('blogger/edit/'.$show_article['id']);
 ?>
 <div class="col-sm-9">
