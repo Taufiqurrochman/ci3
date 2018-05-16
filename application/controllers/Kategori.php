@@ -13,7 +13,18 @@ class Kategori extends CI_Controller {
 
 	public function index()
 	{
-			$data['kategori'] = $this->data_kategori->get_data_category();//ambil data dari Model
+			$limit = 1;
+			$url = $this->uri->segment(3);//mengambil kode untuk segmentasi paging
+			// Jika searching atau filtering tidak terpilih(index)
+			$paging = $this->data_kategori->getRows();//Ambbil jumlah baris pada tabel
+			$data['kategori'] = $this->data_kategori->get_all_data($limit, $url);//ambil data dari Model
+			$config = pagination_config($paging);//Anmbil konfigurasi pada helpers/blog_helper
+
+    		//instansiasi paging
+			$this->pagination->initialize($config);
+			$data['pagination'] = $this->pagination->create_links();
+			//meload view
+			$this->load->view('blogger/header');
 			$this->load->view('category/category_view',$data);
 			$this->load->view('blogger/footer');
 	}
