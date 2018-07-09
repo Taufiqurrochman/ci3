@@ -13,8 +13,8 @@ class Kategori extends CI_Controller {
 
 	public function index()
 	{
-			$limit = 1;
-			$url = $this->uri->segment(3);//mengambil kode untuk segmentasi paging
+		$limit = 1;
+		$url = $this->uri->segment(3);//mengambil kode untuk segmentasi paging
 			// Jika searching atau filtering tidak terpilih(index)
 			$paging = $this->data_kategori->getRows();//Ambbil jumlah baris pada tabel
 			$data['kategori'] = $this->data_kategori->get_all_data($limit, $url);//ambil data dari Model

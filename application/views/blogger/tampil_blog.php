@@ -14,13 +14,14 @@
   			<p><?php echo $row['artikel']?></p>
   		</div>
 	</div>
-    <p><a href="<?php echo site_url('blogger/view/'.$row['id'])?>" class="btn btn-default">Baca Selengkapnya</a> 
+    <p><a href="<?php echo site_url('blogger/view/'.$row['id'])?>" class="btn btn-default">Baca Selengkapnya</a>
+      <?php 
+        if($this->session->userdata('level') == 1){
+        ?> 
        <a href="<?php echo site_url('blogger/edit/'.$row['id'])?>" class="btn btn-primary">Edit</a> 
        <a href="<?php echo site_url('blogger/delete/'.$row['id'])?>" class="btn btn-warning">Delete</a> 
+        <?php } ?>
     </p>
       <br>
-       <?php
-			}
-		?>
     <hr>
 </div>
